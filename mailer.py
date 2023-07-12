@@ -69,7 +69,7 @@ class MailerClass():
             print('Could not email contents' + str(e))
         
     def send_email(self, message, receiver_email):
-        ''' Send email over RBA SMTP '''
+        ''' Send email over SMTP '''
         try: 
             with smtplib.SMTP(self.smtp_server, self.port) as server:
                 server.login(self.login_username, self.login_password)
