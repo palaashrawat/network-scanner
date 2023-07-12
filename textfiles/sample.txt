@@ -1,0 +1,4 @@
+This is where the json dump of the daily output would go. By keeping a local storage of the daily outputs on the server, this ensured that there was a single source of truth if archival data needed to be accessed. 
+
+Sample: 
+{'1.1.1.0/24': {'1.1.1.1': ['20', '50', '1000'], '1.1.1.25': ['5', '22', '443']} , '2.2.2.2': {'2.2.2.2': ['445', '700']}, 'abcd-serv-dev01': {'3.3.3.3': ['50', '500']}}
