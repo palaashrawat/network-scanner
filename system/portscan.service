@@ -1,0 +1,13 @@
+[Unit]
+Description=Service for internal port scanner
+After=network.target
+Wants=network.target
+
+[Service]
+Type=Simple
+User=root
+WorkingDirectory=/home/admpar/portscan
+ExecStart=/usr/bin/python3 /home/admpar/portscan/main.py
+
+[Install]
+WantedBy=multi-user.target
