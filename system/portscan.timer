@@ -1,0 +1,10 @@
+[Unit]
+Description=Run portscan.service daily
+
+[Timer]
+OnCalendar=Mon..Fri *-*-* 10:00:*
+Persistent=True
+Unit=portscan.service
+
+[Install]
+WantedBy=timers.target
