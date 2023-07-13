@@ -55,7 +55,9 @@ class PortScannerClass():
                     active_host_list[host] = [host]
                 elif type == 'hostname': 
                     ip_address = socket.gethostbyname(host)
-                    active_host_list[host] = ip_address
+#                    logging.info(f"Host: {host}, ip: {ip_address}")
+                    active_host_list.setdefault(host, {}).setdefault(ip_address, [])
+#                    active_host_list[host] = ip_address
                 else: 
                     continue
             except Exception as e: 
@@ -91,6 +93,7 @@ class PortScannerClass():
             for future in concurrent.futures.as_completed(future_to_network):
                 ip, open_ports = future.result()
                 network = future_to_network[future]
+                logging.info(f"network: {network}, ip: {ip}, open ports: {open_ports}")
 
                 if network not in result: 
                     result[network] = {}
@@ -174,25 +177,26 @@ class PortScannerClass():
     
     def main(self):
         logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
-        logging.info('Steps to complete: \nGet IP Type \nPerform Network Scan \nGet Open Ports \nCreate Today File \nGet Recent File \nComparison')
+        logging.info('Steps to complete: \n1 - Get IP Type \n2 - Perform Network Scan \n3 - Get Open Ports \n4 - Create Today File \n5 - Get Recent File \n6 - Comparison')
 
         hosts_range_dict = self.get_ip_type()
-        logging.info('Get IP Type - Completed')
+        logging.info('1 - Get IP Type - Completed')
 
         active_host_dict = self.perform_network_scan(hosts_range_dict)
-        logging.info('Perform Network Scan - Completed')
+        logging.info('2 - Perform Network Scan - Completed')
+        logging.info(active_host_dict)
 
         today_ip_dict = self.get_open_ports(active_host_dict)
-        logging.info('Get Open Ports - Completed')
+        logging.info('3 - Get Open Ports - Completed')
 
         today_filename = self.create_today_file(today_ip_dict)
-        logging.info('Create Today File - Completed')
+        logging.info('4 - Create Today File - Completed')
 
         yesterday_filename, yesterday_ip_dict = self.get_recent_file()
-        logging.info('Get Recent File - Completed')
+        logging.info('5 - Get Recent File - Completed')
 
         open, continued, closed = self.compare_ports(yesterday_ip_dict, today_ip_dict)
-        logging.info('Comparison - Completed')
+        logging.info('6 - Comparison - Completed')
 
         return open, continued, closed, yesterday_filename, today_filename
 
