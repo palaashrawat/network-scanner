@@ -41,6 +41,8 @@ class PortScannerClass():
     
         # create ip_type_dict
         active_host_list = {}
+        duplicate_keys = []
+
         for host, type in ip_type_dict.items(): 
             try: 
                 if type == 'network': 
@@ -55,15 +57,22 @@ class PortScannerClass():
                     active_host_list[host] = [host]
                 elif type == 'hostname': 
                     ip_address = socket.gethostbyname(host)
-#                    logging.info(f"Host: {host}, ip: {ip_address}")
+
+                    for key in ip_type_dict.keys():
+                        if key == ip_address:
+                            duplicate_keys.append(key)
+
                     active_host_list.setdefault(host, {}).setdefault(ip_address, [])
-#                    active_host_list[host] = ip_address
                 else: 
                     continue
             except Exception as e: 
                 logging.info(f'Perform Network Scan Exception: {e}')
                 logging.info(f'Here is the problem host: {host}')
                 continue
+
+        for key in duplicate_keys:
+            logging.info(f"duplicate key: {key}")
+            del active_host_list[key]
                 
         return active_host_list
 
